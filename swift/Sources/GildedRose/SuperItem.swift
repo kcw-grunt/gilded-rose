@@ -5,13 +5,16 @@ public class SuperItem: Item {
      
     var isConjured: Bool = false
     
-    override init(name: String,
+    public init(name: String,
                   sellIn: Int,
-                  quality: Int) {
+                  quality: Int,
+                isConjured: Bool) {
         
         super.init(name: name,
                    sellIn: sellIn,
                    quality: quality)
+        
+        self.isConjured = isConjured
 
     }
     

@@ -30,8 +30,8 @@ public class SuperItem: Item {
 
     }
     
-    func superItemDetails() -> String {
-        return "\(self.name), \(self.sellIn), \(self.quality), \(self.isConjured), \(self.isLegendary), \(id)"
+    public func details() -> String {
+        return "\(self.name), \(self.sellIn), \(self.quality), \(self.isConjured), \(self.isLegendary)"
     }
      
 }

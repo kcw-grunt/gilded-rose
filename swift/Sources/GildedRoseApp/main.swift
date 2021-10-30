@@ -28,7 +28,7 @@ let app = GildedRose(superItems: superItems)
 
 
 /// Read in number of days of inventory and parameters of items
-var days = 3;
+var days = 31;
 if (CommandLine.argc > 1) {
     days = Int(CommandLine.arguments[1])! + 1
 }

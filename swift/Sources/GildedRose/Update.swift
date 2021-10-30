@@ -18,42 +18,116 @@ class Update {
         
         for (_, regItem) in regularItems.enumerated() {
             
-            /// Aged brie increase in value
-            if regItem.name == GildedRose.Item.agedBrie.rawValue &&
-                    regItem.quality < 50 {
-                        regItem.sellIn -= 1
+            /// Aged brie increases in value
+            if regItem.name == GildedRose.Item.agedBrie.rawValue {
+                
+                /// Normal Sell in range
+                if regItem.sellIn > 0  {
+                     
+                    if regItem.quality >= 50 {
+                        regItem.quality = 50
+                    } else {
                         regItem.quality += 1
+                    }
+                    
+                    regItem.sellIn -= 1
+                    
+                }/// Quality increases x2
+                else if regItem.sellIn <= 0 {
+
+                    if regItem.quality >= 50 {
+                        regItem.quality = 50
+                    } else {
+                        regItem.quality += 2
+                    }
+                    
+                    regItem.sellIn -= 1
+                    
+                }
+                  
             }
              
             /// Backstage passes  increase in value with exceptions
             if regItem.name == GildedRose.Item._TAFKAL80ETCPasses.rawValue {
-                
-                /// Passes are worthless after the concert
-                if regItem.sellIn <= 0 {
+            
+                /// Normal quality range
+                if regItem.sellIn > 10 {
+                    
+                    if regItem.quality > 50 {
+                        regItem.sellIn -= 1
+                        regItem.quality = 50
+                    }
+                    else if regItem.quality == 50 {
+                        regItem.sellIn -= 1
+                    }
+                    else if regItem.quality >= 0 && regItem.quality < 50 {
+                        regItem.sellIn -= 1
+                        regItem.quality += 1
+                    }/// Quality is less than 0
+                    else {
+                        regItem.sellIn -= 1
+                        regItem.quality = 0
+                    }
+                    
+                }/// Quality of the passes increases a bit closer to the concert
+                else if regItem.sellIn > 5 && regItem.sellIn <= 10 {
+                    
+                    if regItem.quality > 50 {
+                        regItem.sellIn -= 1
+                        regItem.quality = 50
+                    }
+                    else if regItem.quality == 50 {
+                        regItem.sellIn -= 1
+                    }
+                    else if regItem.quality >= 0 && regItem.quality < 50 {
+                        regItem.sellIn -= 1
+                        regItem.quality += 2
+                    }/// Quality is less than 0
+                    else {
+                        regItem.sellIn -= 1
+                        regItem.quality = 0
+                    }
+                    
+                }/// Quality of the passes increases more closer to the concert
+                else if regItem.sellIn >= 0 && regItem.sellIn <= 5  {
+                    
+                    if regItem.quality > 50 {
+                        regItem.sellIn -= 1
+                        regItem.quality = 50
+                    }
+                    else if regItem.quality == 50 {
+                        regItem.sellIn -= 1
+                    }
+                    else if regItem.quality >= 0 && regItem.quality < 50 {
+                        regItem.sellIn -= 1
+                        regItem.quality += 3
+                    }/// Quality is less than 0
+                    else {
+                        regItem.sellIn -= 1
+                        regItem.quality = 0
+                    }
+                }
+                else {
+                    regItem.sellIn -= 1
                     regItem.quality = 0
                 }
                 
-                /// Quality of the passes increases a bit closer to the concert
-                if regItem.sellIn > 5 && regItem.sellIn <= 10 {
-                    regItem.quality += 2
-                    regItem.sellIn -= 1
-                }/// Quality of the passes increases more closer to the concert
-                else if regItem.sellIn > 0 && regItem.sellIn <= 5  {
-                    regItem.quality += 3
-                    regItem.sellIn -= 1
-                }
             }
             
             /// Update the sellIn and quality
-            if regItem.quality > 50 {
-                regItem.quality = 50 - 1//Degrade the quality and reset the max value
-                regItem.sellIn -= 1
-            } else if regItem.quality < 0 {
-                regItem.quality = 0 //Degrade the quality and reset the min value
-                regItem.sellIn -= 1
-            } else {
-                regItem.quality -= 1
-                regItem.sellIn -= 1
+            /// Exclude other regular special needs items
+            if regItem.name != GildedRose.Item.agedBrie.rawValue &&
+                regItem.name != GildedRose.Item._TAFKAL80ETCPasses.rawValue {
+                if regItem.quality > 50 {
+                    regItem.quality = 50 - 1//Degrade the quality and reset the max value
+                    regItem.sellIn -= 1
+                } else if regItem.quality < 0 {
+                    regItem.quality = 0 //Degrade the quality and reset the min value
+                    regItem.sellIn -= 1
+                } else {
+                    regItem.quality -= 1
+                    regItem.sellIn -= 1
+                }
             }
         }
     }
@@ -89,11 +163,11 @@ class Update {
                 legItem.sellIn = 0
             }
             
-            /// DEV: Possible solution
-            //if legendaryItems[leg].sellIn > 0 {
-            //
-            //legendaryItems[leg].sellIn -= 1
-            //}
+            ///DEV: All Legendary items are not be sold?
+            ///Reducce selltin by `1`
+            //  else if legItem.sellIn < 0 {
+            //      legItem.sellIn = 0
+            //  }
         }
         
         completionHandler(.success(legendaryItems))
@@ -118,14 +192,14 @@ class Update {
             if conItem.quality > 50 {
                 conItem.sellIn -= 1
                 conItem.quality  = 50 - 2
-            }/// Quality can never be zero
-            else if conItem.quality < 0 {
+            }/// Quality can never below zero
+            else if conItem.quality > 0 && conItem.quality <= 50 {
                 conItem.sellIn -= 1
-                conItem.quality  = 0
+                conItem.quality -= 2
             }
             else {
                 conItem.sellIn -= 1
-                conItem.quality -= 2
+                conItem.quality = 0
             }
         }
         

@@ -19,10 +19,14 @@ public class GildedRose {
     
     /// Update Quality
     /// - Parameter superItems: Array of SuperItems `[SuperItems]`
-    /// - Returns: Resutlt <Success, Failure/Error>
+    /// - Returns: Result <Success, Failure/Error>
     public func updateQuality(completionHandler: @escaping (Result<Bool, ProgramError>) -> Void) {
         
         var updatedSuperItems = [SuperItem]()
+        
+        if self.superItems.count == 0 {
+            completionHandler(.failure(ProgramError.noDataEntered))
+        }
         
         /// Creates an array of regular items that have `normal` behavior
         let regularItems = self.superItems.filter {

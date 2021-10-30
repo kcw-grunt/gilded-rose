@@ -4,4 +4,5 @@ public enum ProgramError: Error {
     case legendaryQualityError
     case conjuredError
     case itemTypeMismatch
+    case noDataEntered
 }

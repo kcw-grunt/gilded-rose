@@ -1,4 +1,5 @@
 import Foundation
+import CoreLocation
 
 class Update {
     
@@ -78,7 +79,7 @@ class Update {
                     }
                     else if regItem.quality == 50 {
                         regItem.sellIn -= 1
-                    }
+                    }/// Passes double in value
                     else if regItem.quality >= 0 && regItem.quality < 50 {
                         regItem.sellIn -= 1
                         regItem.quality += 2
@@ -97,7 +98,7 @@ class Update {
                     }
                     else if regItem.quality == 50 {
                         regItem.sellIn -= 1
-                    }
+                    }/// Passes triple in value
                     else if regItem.quality >= 0 && regItem.quality < 50 {
                         regItem.sellIn -= 1
                         regItem.quality += 3
@@ -118,16 +119,47 @@ class Update {
             /// Exclude other regular special needs items
             if regItem.name != GildedRose.Item.agedBrie.rawValue &&
                 regItem.name != GildedRose.Item._TAFKAL80ETCPasses.rawValue {
-                if regItem.quality > 50 {
-                    regItem.quality = 50 - 1//Degrade the quality and reset the max value
-                    regItem.sellIn -= 1
-                } else if regItem.quality < 0 {
-                    regItem.quality = 0 //Degrade the quality and reset the min value
-                    regItem.sellIn -= 1
-                } else {
-                    regItem.quality -= 1
-                    regItem.sellIn -= 1
+                
+                /// Assumed spec: Quality degrades by 1 when sellIn is`> 0`
+                if regItem.sellIn > 0 {
+                    
+                    if regItem.quality >= 50 {
+                        regItem.quality = 50 - 1
+                        regItem.sellIn -= 1
+                        
+                    }
+                    else if regItem.quality > 0 &&
+                                regItem.quality < 50 {
+                        regItem.quality -= 1
+                        regItem.sellIn -= 1
+                        
+                    } else {
+                        regItem.quality = 0
+                        regItem.sellIn -= 1
+                        
+                    }
+                    
+                }/// Hidden  spec: Quality degrades by 2 to zero when sellIn is `<= 0`
+                else if regItem.sellIn <= 0 {
+                    
+                    if regItem.quality >= 50 {
+                        regItem.quality = 50 - 2
+                        regItem.sellIn -= 1
+                        
+                    }
+                    else if regItem.quality > 0 &&
+                                regItem.quality < 50 {
+                        regItem.quality -= 2
+                        regItem.sellIn -= 1
+                        
+                    } else {
+                        regItem.quality = 0
+                        regItem.sellIn -= 1
+                    }
                 }
+                
+                
+                 
             }
         }
     }
@@ -158,13 +190,13 @@ class Update {
                 legItem.sellIn -= 1
             }
             ///DEV: All Legendary items are not be sold?
-            ///Set sellin to `0`
+            ///Set sellIn to `0`
             else if legItem.sellIn < 0 {
                 legItem.sellIn = 0
             }
             
             ///DEV: All Legendary items are not be sold?
-            ///Reducce selltin by `1`
+            ///Reduce sellIn by `1`
             //  else if legItem.sellIn < 0 {
             //      legItem.sellIn = 0
             //  }

@@ -35,6 +35,8 @@ if (CommandLine.argc > 1) {
 
 for i in 0..<days {
     
+    var programError: ProgramError?
+    
     print("--------------------------------- day \(i) --------------------------------");
     print("|           name           | sell In | Quality | Conjured? | Legendary? |");
     print("-------------------------------------------------------------------------");
@@ -42,12 +44,17 @@ for i in 0..<days {
         print(superItem.description);
     }
     app.updateQuality { result in
-
+        
         switch result {
             case .success:
-                print(" ")
-            case .failure:
-                print("Failure")
+                print("...")
+            case .failure (let error):
+                programError = error
         }
-    } 
+    }
+    
+    if let error = programError {
+        print("ERROR: \(String(describing: error))")
+        break
+    }
 }

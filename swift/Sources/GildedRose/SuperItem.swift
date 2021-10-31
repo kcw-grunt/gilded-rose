@@ -31,7 +31,7 @@ public class SuperItem: Item {
     }
     
     public func details() -> String {
-        return "\(self.name), \(self.sellIn), \(self.quality), \(self.isConjured), \(self.isLegendary)"
+        return "\(self.name), \(self.sellIn), \(self.quality), \(self.isConjured), \(self.isLegendary), \(id)"
     }
      
 }
